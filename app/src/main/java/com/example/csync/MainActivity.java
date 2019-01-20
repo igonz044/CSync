@@ -14,7 +14,7 @@ public class MainActivity extends AbsRuntimePermission {
         setContentView(R.layout.activity_main);
 
         requestAppPermission(new String[]{
-                        Manifest.permission.CAMERA,},
+                        Manifest.permission.CAMERA},
                 //android.Manifest.permission.BODY_SENSORS},
                 R.string.Permission_Text, REQUEST_PERMISSION);
 
