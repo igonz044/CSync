@@ -21,6 +21,7 @@ public class fileBuilder {
     private int month;
     private int day;
 
+    //Constructor for the fileBuilder class, attempts to open a file to write the .ics information into
     public fileBuilder(String data) { //create the file
         info = data;
         //System.out.println("Start");
@@ -83,12 +84,14 @@ public class fileBuilder {
         output.println("END:VEVENT");
 
     }
-
+    //Return: intent that sends message to calendar app to save an event
+    //Finalizes .ics file and creates a single event for testing purposes
     public Intent export() { //setup for the calendar file
         output.print("END:VCALENDAR");
         if(output != null) {
             output.close();
         }
+
         Intent intent = new Intent(Intent.ACTION_INSERT);
         intent.setData(CalendarContract.Events.CONTENT_URI);
         intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, getStart(info).getTimeInMillis());
@@ -98,18 +101,24 @@ public class fileBuilder {
         return intent;
     }
 
+    //String info: the string with data on the event start date
+    //Return: A Calendar object derived from passed info
     private Calendar getStart(String info) {
         Calendar beginTime = Calendar.getInstance();
         beginTime.set(2019, 0, 24, 18, 00);
         return beginTime;
     }
 
+    //String info: the string with data on the event end date
+    //Return: A Calendar object derived from passed info
     private Calendar getEnd(String info) {
         Calendar endTime = Calendar.getInstance();
         endTime.set(2019, 0, 24, 19, 00);
         return endTime;
     }
 
+    //String info: the string with data on the event description
+    //Return: A String object derived from passed info
     private String getSummary(String info) {
         if(info.isEmpty()) {
             return "Empty";
@@ -119,11 +128,13 @@ public class fileBuilder {
         }
     }
 
+    //Return: A String with the current city and time zone
     private String getTimeZone() {
         TimeZone zone = currentDate.getTimeZone();
         return zone.getID();
     }
 
+    //Return: Gives the current date and time split by "T" with no spaces
     private String getCurrentDate() {
         String CD = "";
         CD = CD + Integer.toString(year);
@@ -137,6 +148,7 @@ public class fileBuilder {
         return CD;
     }
 
+    //Return: The numerical value of the current month as a String with two digits
     private String month() {
         month = month + 1;
         String m;
@@ -148,6 +160,7 @@ public class fileBuilder {
         return m;
     }
 
+    //Return: The current day as a String with two digits
     private String day() {
         String d;
         if(day < 10) {
@@ -158,6 +171,7 @@ public class fileBuilder {
         return d;
     }
 
+    //Return: The current hour with two digits
     private String hour() {
         String h;
         if(currentDate.get(Calendar.HOUR_OF_DAY) < 10) {
@@ -168,6 +182,7 @@ public class fileBuilder {
         return h;
     }
 
+    //Return: The current minute with two digits
     private String minute() {
         String m;
         if(currentDate.get(Calendar.MINUTE) < 10) {
@@ -178,6 +193,7 @@ public class fileBuilder {
         return m;
     }
 
+    //Return: The current second with two digits
     private String second() {
         String s;
         if(currentDate.get(Calendar.SECOND) < 10) {
