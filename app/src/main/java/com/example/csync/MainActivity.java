@@ -13,6 +13,8 @@ public class MainActivity extends AbsRuntimePermission {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent vision = new Intent(MainActivity.this, VisionActivity.class);
+        startActivity(vision);
         /*requestAppPermission(new String[]{
                         Manifest.permission.CAMERA,
                         Manifest.permission.READ_EXTERNAL_STORAGE},
@@ -27,5 +29,6 @@ public class MainActivity extends AbsRuntimePermission {
     {
 
     }
+
 
 }
