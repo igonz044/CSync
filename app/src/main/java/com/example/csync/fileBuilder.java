@@ -49,20 +49,25 @@ public class fileBuilder {
         date/time: year.month.day.T.hour.minute.second
         20190119T230000
         */
-
+        //Unique ID
         output.println("Begin:VEvent");
         output.print("UID:");
         output.println(UID);
+        //Creation time stamp
         output.print("DTSTAMP:");
         output.println(stamp);
+        //Start time
         output.print("DTSTART;TZID=");
         output.print(timeZone);
-        //add start time
+        output.println(getStart());
+        //End time
         output.print("DTEND;TZID=");
         output.print(timeZone);
-        //add end time
+        output.println(getEnd());
+        //Summary
         output.print("SUMMARY");
-        //add description
+        output.println(getSummary());
+
         output.println("CLASS:Public");
         output.println("End:VEvent");
 
@@ -71,6 +76,18 @@ public class fileBuilder {
     public void export() { //setup for the calendar file
         output.print("END:VCALENDAR");
         output.close();
+    }
+
+    private String getStart() {
+        return "";
+    }
+
+    private String getEnd() {
+        return "";
+    }
+
+    private String getSummary() {
+        return "";
     }
 
     private String getTimeZone() {
