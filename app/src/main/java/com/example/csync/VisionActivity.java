@@ -2,6 +2,7 @@ package com.example.csync;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.Button;
 
 public class VisionActivity extends AppCompatActivity {
 
@@ -10,4 +11,6 @@ public class VisionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vision_acitvity);
     }
+
+
 }
