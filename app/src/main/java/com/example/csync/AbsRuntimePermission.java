@@ -1,23 +1,24 @@
-package com.example.csync;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.util.SparseIntArray;
-import android.view.View;
+        package com.example.csync;
+
+        import android.app.Activity;
+        import android.content.Intent;
+        import android.content.pm.PackageManager;
+        import android.net.Uri;
+        import android.os.Bundle;
+        import android.provider.Settings;
+        import android.support.annotation.NonNull;
+        import android.support.design.widget.Snackbar;
+        import android.support.v4.app.ActivityCompat;
+        import android.support.v4.content.ContextCompat;
+        import android.util.SparseIntArray;
+        import android.view.View;
 
 /**
  * Created by Ronan on 9/16/2017.
  */
 
-public abstract class AbsRuntimePermission extends Activity{
+public abstract class AbsRuntimePermission extends Activity {
 
     private SparseIntArray ErrorString;
     /* private SensorManager mSensorManager;

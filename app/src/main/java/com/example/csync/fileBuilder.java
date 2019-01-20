@@ -36,7 +36,7 @@ public class fileBuilder {
             output.println("VERSION:2.0");
             output.println("CALSCALE:GREGORIAN");
             output.println("PRODID:-//CSync");
-            this.addEvent();
+            //this.addEvent();
             this.export();
             //System.out.println("completed");
         } catch (IOException e) {
@@ -94,18 +94,19 @@ public class fileBuilder {
         intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, getStart(info).getTimeInMillis());
         intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, getEnd(info).getTimeInMillis());
         intent.putExtra(CalendarContract.Events.TITLE, getSummary(info));
+        System.out.println("finsihed");
         return intent;
     }
 
     private Calendar getStart(String info) {
         Calendar beginTime = Calendar.getInstance();
-        beginTime.set(2012, 0, 19, 7, 30);
+        beginTime.set(2019, 0, 24, 18, 00);
         return beginTime;
     }
 
     private Calendar getEnd(String info) {
         Calendar endTime = Calendar.getInstance();
-        endTime.set(2012, 0, 19, 7, 30);
+        endTime.set(2019, 0, 24, 19, 00);
         return endTime;
     }
 
@@ -114,7 +115,7 @@ public class fileBuilder {
             return "Empty";
         }
         else {
-            return info;
+            return "Meet with Greg";
         }
     }
 
