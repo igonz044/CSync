@@ -1,16 +1,30 @@
 package com.example.csync;
 
+import android.Manifest;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AbsRuntimePermission {
+
+    private static final int REQUEST_PERMISSION = 10; //not too sure why this is 10 so be careful
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //Testing
 
+        requestAppPermission(new String[]{
+                        android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        android.Manifest.permission.INTERNET,},
+                //android.Manifest.permission.BODY_SENSORS},
+                R.string.Permission_Text, REQUEST_PERMISSION);
+
+    }
+    //KEEP THIS FOR THE APP PERMISSIONS
+    @Override
+    public void onPermissionGranted(int requestCode)
+    {
 
     }
 }
