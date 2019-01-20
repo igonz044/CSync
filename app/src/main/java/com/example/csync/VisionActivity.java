@@ -1,5 +1,6 @@
 package com.example.csync;
 
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.Manifest;
@@ -48,7 +49,7 @@ import java.util.Locale;
 
 public class VisionActivity extends AppCompatActivity {
 
-    private final String CLOUD_VISION_API_KEY = getResources().getString(R.string.Vision_API);
+    //private final String CLOUD_VISION_API_KEY = getResources().getString(R.string.Vision_API);
     public static final String FILE_NAME = "temp.jpg";
     private static final String ANDROID_CERT_HEADER = "X-Android-Cert";
     private static final String ANDROID_PACKAGE_HEADER = "X-Android-Package";
@@ -61,13 +62,19 @@ public class VisionActivity extends AppCompatActivity {
     public static final int CAMERA_PERMISSIONS_REQUEST = 2;
     public static final int CAMERA_IMAGE_REQUEST = 3;
 
-    private TextView mImageDetails;
+    private TextView textView;
     private ImageView mMainImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vision_acitvity);
+        textView = (TextView) findViewById(R.id.TextView);
+        Intent intent = getIntent();
+        //intent.getByteArrayExtra(getResources().getString(R.string.Start_Vision_Intent));
+        String temp = intent.getStringExtra(getResources().getString(R.string.Start_Vision_Intent));
+        Uri uri = Uri.parse(temp);
+        uploadImage(uri);
     }
 
     public File getCameraFile() {
@@ -97,6 +104,7 @@ public class VisionActivity extends AppCompatActivity {
                                 MAX_DIMENSION);
 
                 callCloudVision(bitmap);
+                Toast.makeText(this,"bitmap is not empty", Toast.LENGTH_LONG).show();
                 mMainImage.setImageBitmap(bitmap);
 
             } catch (IOException e) {
@@ -105,7 +113,7 @@ public class VisionActivity extends AppCompatActivity {
             }
         } else {
             Log.d(TAG, "Image picker gave us a null image.");
-            //Toast.makeText(this, R.string.image_picker_error, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "This did not work", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -114,7 +122,7 @@ public class VisionActivity extends AppCompatActivity {
         JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
 
         VisionRequestInitializer requestInitializer =
-                new VisionRequestInitializer(CLOUD_VISION_API_KEY) {
+                new VisionRequestInitializer(getResources().getString(R.string.Vision_API)) {
                     /**
                      * We override this so we can inject important identifying fields into the HTTP
                      * headers. This enables use of a restricted cloud platform API key.
@@ -176,7 +184,7 @@ public class VisionActivity extends AppCompatActivity {
         return annotateRequest;
     }
 
-    private static class LableDetectionTask extends AsyncTask<Object, Void, String> {
+    private class LableDetectionTask extends AsyncTask<Object, Void, String> {
         private final WeakReference<VisionActivity> mActivityWeakReference;
         private Vision.Images.Annotate mRequest;
 
@@ -190,6 +198,8 @@ public class VisionActivity extends AppCompatActivity {
             try {
                 Log.d(TAG, "created Cloud Vision request object, sending request");
                 BatchAnnotateImagesResponse response = mRequest.execute();
+                String temp = convertResponseToString(response);
+                VisionActivity.this.textView.setText(temp);
                 return convertResponseToString(response);
 
             } catch (GoogleJsonResponseException e) {
