@@ -16,7 +16,7 @@ public class MainActivity extends AbsRuntimePermission {
         requestAppPermission(new String[]{
                                             Manifest.permission.CAMERA,
                                             Manifest.permission.READ_EXTERNAL_STORAGE},
-                R.string.Permission_Text, REQUEST_PERMISSION);
+                            R.string.Permission_Text, REQUEST_PERMISSION);
         Intent imageSelect = new Intent(MainActivity.this, OpenCVActivity.class);
         startActivity(imageSelect);
 

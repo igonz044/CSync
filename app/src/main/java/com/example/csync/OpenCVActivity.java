@@ -1,5 +1,6 @@
 package com.example.csync;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,28 +19,36 @@ import java.io.InputStream;
 
 public class OpenCVActivity extends AppCompatActivity {
     
-    private static final int  SELECT_IMAGE = 1;
+    private static final int  SELECT_IMAGE = 10;
+    private static final int VISION_ACTIVITY = 692;
     private ImageView viewSelectedImage;
     private Bitmap image;
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Uri intentData = data.getData();
-        try {
-            InputStream imageStream = getContentResolver().openInputStream(intentData);
-            image = BitmapFactory.decodeStream(imageStream);
-            viewSelectedImage.setImageBitmap(image);
-
-            //OpenCV code
-            /*
-                Bitmap temp = image.copy(Bitmap.Config.ARGB_8888, true);
-                Mat calendar = new Mat();
-                Utils.bitmapToMat(temp, calendar);
-            */
+        if(requestCode == SELECT_IMAGE){
+            if(resultCode == Activity.RESULT_OK){
+                Uri intentData = data.getData();
+                String path = intentData.getPath();
+                Intent parse = new Intent(OpenCVActivity.this, VisionActivity.class);
+                parse.putExtra(getResources().getString(R.string.Start_Vision_Intent), path);
+                startActivityForResult(parse, VISION_ACTIVITY);
+            }
         }
-        catch (FileNotFoundException e){
-            //TODO catch some shit
-            e.printStackTrace();
-        }
+//        try {
+//            InputStream imageStream = getContentResolver().openInputStream(intentData);
+//            image = BitmapFactory.decodeStream(imageStream);
+//            viewSelectedImage.setImageBitmap(image);
+//
+//            //OpenCV code
+//                Bitmap temp = image.copy(Bitmap.Config.ARGB_8888, true);
+//                Mat calendar = new Mat();
+//                Utils.bitmapToMat(temp, calendar);
+//            */
+//        }
+//        catch (FileNotFoundException e){
+//            //TODO catch some shit
+//            e.printStackTrace();
+//        }
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
