@@ -1,6 +1,7 @@
 package com.example.csync;
 
 
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,21 +18,26 @@ public class fileBuilder {
     private int day;
 
     public fileBuilder() { //create the file
+        //System.out.println("Start");
         currentDate = Calendar.getInstance();
         year = currentDate.get(Calendar.YEAR);
         month = currentDate.get(Calendar.MONTH);
         day = currentDate.get(Calendar.DAY_OF_MONTH);
-
-        fileName = new File("exportFile.ics");
+        fileName = new File("/data/data/com.example.csync", "exportFile.ics");
         try {
+            //System.out.println("through");
             output = new PrintWriter(fileName);
+            output.println("BEGIN:VCALENDAR");
+            output.println("VERSION:2.0");
+            output.println("CALSCALE:GREGORIAN");
+            output.println("PRODID:-//CSync");
+            this.addEvent();
+            this.export();
+            //System.out.println("completed");
         } catch (IOException e) {
-            //errors
+            //System.out.println("Caught");
+        //errors
         }
-        output.println("BEGIN:VCALENDAR");
-        output.println("VERSION:2.0");
-        output.println("CALSCALE:GREGORIAN");
-        output.println("PRODID:-//CSync");
 
     }
 
@@ -50,7 +56,7 @@ public class fileBuilder {
         20190119T230000
         */
         //Unique ID
-        output.println("Begin:VEvent");
+        output.println("BEGIN:VEVENT");
         output.print("UID:");
         output.println(UID);
         //Creation time stamp
@@ -65,17 +71,19 @@ public class fileBuilder {
         output.print(timeZone);
         output.println(getEnd());
         //Summary
-        output.print("SUMMARY");
+        output.print("SUMMARY:");
         output.println(getSummary());
 
         output.println("CLASS:Public");
-        output.println("End:VEvent");
+        output.println("END:VEVENT");
 
     }
 
     public void export() { //setup for the calendar file
         output.print("END:VCALENDAR");
-        output.close();
+        if(output != null) {
+            output.close();
+        }
     }
 
     private String getStart() {
@@ -98,13 +106,64 @@ public class fileBuilder {
     private String getCurrentDate() {
         String CD = "";
         CD = CD + Integer.toString(year);
-        CD = CD + Integer.toString(month);
-        CD = CD + Integer.toString(day);
+        CD = CD + this.month();
+        CD = CD + this.day();
         CD = CD + "T";
         currentDate = Calendar.getInstance();
-        CD = CD + Integer.toString(currentDate.get(Calendar.HOUR_OF_DAY));
-        CD = CD + Integer.toString(currentDate.get(Calendar.MINUTE));
-        CD = CD + Integer.toString(currentDate.get(Calendar.SECOND));
+        CD = CD + this.hour();
+        CD = CD + this.minute();
+        CD = CD + this.second();
         return CD;
+    }
+
+    private String month() {
+        month = month + 1;
+        String m;
+        if(month < 10) {
+            m = "0" + Integer.toString(month);
+        } else {
+            m = Integer.toString(month);
+        }
+        return m;
+    }
+
+    private String day() {
+        String d;
+        if(day < 10) {
+            d = "0" + Integer.toString(day);
+        } else {
+            d = Integer.toString(day);
+        }
+        return d;
+    }
+
+    private String hour() {
+        String h;
+        if(currentDate.get(Calendar.HOUR_OF_DAY) < 10) {
+            h = "0" + Integer.toString(currentDate.get(Calendar.HOUR_OF_DAY));
+        } else {
+            h = Integer.toString(currentDate.get(Calendar.HOUR_OF_DAY));
+        }
+        return h;
+    }
+
+    private String minute() {
+        String m;
+        if(currentDate.get(Calendar.MINUTE) < 10) {
+            m = "0" + Integer.toString(currentDate.get(Calendar.MINUTE));
+        } else {
+            m = Integer.toString(currentDate.get(Calendar.MINUTE));
+        }
+        return m;
+    }
+
+    private String second() {
+        String s;
+        if(currentDate.get(Calendar.SECOND) < 10) {
+            s = "0" + Integer.toString(currentDate.get(Calendar.SECOND));
+        } else {
+            s = Integer.toString(currentDate.get(Calendar.SECOND));
+        }
+        return s;
     }
 }
