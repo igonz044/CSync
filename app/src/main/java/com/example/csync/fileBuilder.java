@@ -2,6 +2,9 @@ package com.example.csync;
 
 
 
+import android.content.Intent;
+import android.provider.CalendarContract;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,11 +16,13 @@ public class fileBuilder {
     private File fileName;
     private PrintWriter output;
     private Calendar currentDate;
+    private String info;
     private int year;
     private int month;
     private int day;
 
-    public fileBuilder() { //create the file
+    public fileBuilder(String data) { //create the file
+        info = data;
         //System.out.println("Start");
         currentDate = Calendar.getInstance();
         year = currentDate.get(Calendar.YEAR);
@@ -65,37 +70,52 @@ public class fileBuilder {
         //Start time
         output.print("DTSTART;TZID=");
         output.print(timeZone);
-        output.println(getStart());
+        output.println(getStart(info));
         //End time
         output.print("DTEND;TZID=");
         output.print(timeZone);
-        output.println(getEnd());
+        output.println(getEnd(info));
         //Summary
         output.print("SUMMARY:");
-        output.println(getSummary());
+        output.println(getSummary(info));
 
         output.println("CLASS:Public");
         output.println("END:VEVENT");
 
     }
 
-    public void export() { //setup for the calendar file
+    public Intent export() { //setup for the calendar file
         output.print("END:VCALENDAR");
         if(output != null) {
             output.close();
         }
+        Intent intent = new Intent(Intent.ACTION_INSERT);
+        intent.setData(CalendarContract.Events.CONTENT_URI);
+        intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, getStart(info).getTimeInMillis());
+        intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, getEnd(info).getTimeInMillis());
+        intent.putExtra(CalendarContract.Events.TITLE, getSummary(info));
+        return intent;
     }
 
-    private String getStart() {
-        return "";
+    private Calendar getStart(String info) {
+        Calendar beginTime = Calendar.getInstance();
+        beginTime.set(2012, 0, 19, 7, 30);
+        return beginTime;
     }
 
-    private String getEnd() {
-        return "";
+    private Calendar getEnd(String info) {
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(2012, 0, 19, 7, 30);
+        return endTime;
     }
 
-    private String getSummary() {
-        return "";
+    private String getSummary(String info) {
+        if(info.isEmpty()) {
+            return "Empty";
+        }
+        else {
+            return info;
+        }
     }
 
     private String getTimeZone() {

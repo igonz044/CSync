@@ -10,6 +10,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Testing
-        fileBuilder file = new fileBuilder();
+        fileBuilder file = new fileBuilder("");
     }
 }
