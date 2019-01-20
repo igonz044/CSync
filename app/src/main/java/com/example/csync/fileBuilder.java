@@ -20,6 +20,12 @@ public class fileBuilder {
     private int year;
     private int month;
     private int day;
+    private int year2;
+    private int month2;
+    private int day2;
+    private String event;
+    private String time;
+    String [] stuff;
 
     //Constructor for the fileBuilder class, attempts to open a file to write the .ics information into
     public fileBuilder(String data) { //create the file
@@ -29,6 +35,12 @@ public class fileBuilder {
         year = currentDate.get(Calendar.YEAR);
         month = currentDate.get(Calendar.MONTH);
         day = currentDate.get(Calendar.DAY_OF_MONTH);
+
+        stuff = info.split(";");
+        /*for(int i = 0; i<5; i++) {
+            System.out.println(Integer.parseInt(stuff[i]));
+        }*/
+
         fileName = new File("/data/data/com.example.csync", "exportFile.ics");
         try {
             //System.out.println("through");
@@ -71,14 +83,14 @@ public class fileBuilder {
         //Start time
         output.print("DTSTART;TZID=");
         output.print(timeZone);
-        output.println(getStart(info));
+        output.println(getStart());
         //End time
         output.print("DTEND;TZID=");
         output.print(timeZone);
-        output.println(getEnd(info));
+        output.println(getEnd());
         //Summary
         output.print("SUMMARY:");
-        output.println(getSummary(info));
+        output.println(getSummary());
 
         output.println("CLASS:Public");
         output.println("END:VEVENT");
@@ -94,37 +106,45 @@ public class fileBuilder {
 
         Intent intent = new Intent(Intent.ACTION_INSERT);
         intent.setData(CalendarContract.Events.CONTENT_URI);
-        intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, getStart(info).getTimeInMillis());
-        intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, getEnd(info).getTimeInMillis());
-        intent.putExtra(CalendarContract.Events.TITLE, getSummary(info));
-        System.out.println("finsihed");
+        intent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, getStart().getTimeInMillis());
+        intent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, getEnd().getTimeInMillis());
+        intent.putExtra(CalendarContract.Events.TITLE, getSummary());
+        //System.out.println("finsihed");
         return intent;
     }
 
     //String info: the string with data on the event start date
     //Return: A Calendar object derived from passed info
-    private Calendar getStart(String info) {
+    private Calendar getStart() {
         Calendar beginTime = Calendar.getInstance();
-        beginTime.set(2019, 0, 24, 18, 00);
+        int m = Integer.parseInt(stuff[2]);
+        if(m != 0) {
+            m=m-1;
+        }
+        beginTime.set(Integer.parseInt(stuff[4]), m, Integer.parseInt(stuff[3]), Integer.parseInt(stuff[1]), 00);
         return beginTime;
     }
 
     //String info: the string with data on the event end date
     //Return: A Calendar object derived from passed info
-    private Calendar getEnd(String info) {
+    private Calendar getEnd() {
         Calendar endTime = Calendar.getInstance();
-        endTime.set(2019, 0, 24, 19, 00);
+        int m = Integer.parseInt(stuff[2]);
+        if(m != 0) {
+            m=m-1;
+        }
+        endTime.set(Integer.parseInt(stuff[4]), m, Integer.parseInt(stuff[3]), Integer.parseInt(stuff[1])+1, 00);
         return endTime;
     }
 
     //String info: the string with data on the event description
     //Return: A String object derived from passed info
-    private String getSummary(String info) {
+    private String getSummary() {
         if(info.isEmpty()) {
             return "Empty";
         }
         else {
-            return "Meet with Greg";
+            return stuff[0];
         }
     }
 
@@ -147,6 +167,7 @@ public class fileBuilder {
         CD = CD + this.second();
         return CD;
     }
+
 
     //Return: The numerical value of the current month as a String with two digits
     private String month() {
