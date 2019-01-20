@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">CSync</string>
-    <string name="Permission_Text">Camera permission needed for app to function</string>
+    <string name="Permission_Text">All permission needed for app to function</string>
+    <string name="Vision_API">AIzaSyBOJSY0Ze-F5bl-awCHMKWQU2ZsC8l-1Ls</string>
+    <string name="Start_OpenCV_Intent">START_OPENCV_INTENT</string>
+    <string name="Return_OpenCV_Intent">RETURN_OPENCV_INTENT</string>
+    <string name="Start_Vision_Intent">START_VISION_INTENT</string>
+    <string name="Return_Vision_Intent">RETURN_VISION_INTENT</string>
+    <string name="Start_Calender_Intent">START_CALENDER_INTENT</string>
+    <string name="Return_Calender_Intent">RETURN_CALENDER_INTENT</string>
 </resources>
