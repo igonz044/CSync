@@ -28,52 +28,66 @@ public class fileBuilder {
         } catch (IOException e) {
             //errors
         }
-
+        output.println("BEGIN:VCALENDAR");
+        output.println("VERSION:2.0");
+        output.println("CALSCALE:GREGORIAN");
+        output.println("PRODID:-//CSync");
 
     }
 
     public void addEvent() { //takes in a string of information and adds it to the file
-        String UID = "";
-        //create the Unique ID
-        UID = UID + Integer.toString(year);
-        UID = UID + Integer.toString(month);
-        UID = UID + Integer.toString(day);
-        UID = UID + "T";
-        currentDate = Calendar.getInstance();
-        UID = UID + Integer.toString(currentDate.get(Calendar.HOUR_OF_DAY));
-        UID = UID + Integer.toString(currentDate.get(Calendar.MINUTE));
-        UID = UID + Integer.toString(currentDate.get(Calendar.SECOND));
+        String UID = getCurrentDate(); //create unique ID
         String stamp = UID; //create time stamp
-        stamp = stamp + "Z"; //add universal time stamp
-        UID = UID + "-CSync";
 
-        TimeZone zone = currentDate.getTimeZone();
-        String timeZone = zone.getID(); //get the time zone
+        stamp = stamp + "Z"; //add universal time stamp
+        UID = UID + "-CSync"; //add CSync stamp
+
+        String timeZone = this.getTimeZone();
+        timeZone = timeZone + ":";
 
         /*VEvent
         date/time: year.month.day.T.hour.minute.second
         20190119T230000
         */
+
         output.println("Begin:VEvent");
         output.print("UID:");
         output.println(UID);
         output.print("DTSTAMP:");
         output.println(stamp);
-        output.print("DTSTART");
-
-        output.print("DTEND");
-
+        output.print("DTSTART;TZID=");
+        output.print(timeZone);
+        //add start time
+        output.print("DTEND;TZID=");
+        output.print(timeZone);
+        //add end time
         output.print("SUMMARY");
-
+        //add description
         output.println("CLASS:Public");
         output.println("End:VEvent");
 
     }
 
-    private void compile() { //setup for the calendar file
-        output.println("BEGIN:VCALENDAR");
-
-        output.println("END:VCALENDAR");
+    public void export() { //setup for the calendar file
+        output.print("END:VCALENDAR");
+        output.close();
     }
 
+    private String getTimeZone() {
+        TimeZone zone = currentDate.getTimeZone();
+        return zone.getID();
+    }
+
+    private String getCurrentDate() {
+        String CD = "";
+        CD = CD + Integer.toString(year);
+        CD = CD + Integer.toString(month);
+        CD = CD + Integer.toString(day);
+        CD = CD + "T";
+        currentDate = Calendar.getInstance();
+        CD = CD + Integer.toString(currentDate.get(Calendar.HOUR_OF_DAY));
+        CD = CD + Integer.toString(currentDate.get(Calendar.MINUTE));
+        CD = CD + Integer.toString(currentDate.get(Calendar.SECOND));
+        return CD;
+    }
 }
