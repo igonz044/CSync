@@ -12,3 +12,5 @@
 /captures
 .externalNativeBuild
 app/src/main/res/client_secret.json
+opencv/build/*
+CSync-fc4d5eea5a75.json
