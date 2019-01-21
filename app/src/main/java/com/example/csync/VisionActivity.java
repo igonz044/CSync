@@ -199,7 +199,8 @@ public class VisionActivity extends AppCompatActivity {
                 Log.d(TAG, "created Cloud Vision request object, sending request");
                 BatchAnnotateImagesResponse response = mRequest.execute();
                 String temp = convertResponseToString(response);
-                VisionActivity.this.textView.setText(temp);
+                //oast.makeText(getApplicationContext(), temp, Toast.LENGTH_LONG).show();
+                //VisionActivity.this.textView.setText(temp);
                 return convertResponseToString(response);
 
             } catch (GoogleJsonResponseException e) {
@@ -214,8 +215,12 @@ public class VisionActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             VisionActivity activity = mActivityWeakReference.get();
             if (activity != null && !activity.isFinishing()) {
-                //TextView imageDetail = activity.findViewById(R.id.image_details);
-                //imageDetail.setText(result);
+                TextView imageDetail = activity.findViewById(R.id.TextView);
+                imageDetail.setText(result);
+            }
+            else {
+                TextView textView = activity.findViewById(R.id.TextView);
+                textView.setText("Not finished");
             }
         }
     }

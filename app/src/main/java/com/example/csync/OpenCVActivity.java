@@ -29,7 +29,7 @@ public class OpenCVActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 Uri intentData = data.getData();
                 String path = intentData.getPath();
-                Intent parse = new Intent(OpenCVActivity.this, VisionActivity.class);
+                Intent parse = new Intent(OpenCVActivity.this, GoogleVisionActivity.class);
                 parse.putExtra(getResources().getString(R.string.Start_Vision_Intent), path);
                 startActivityForResult(parse, VISION_ACTIVITY);
             }
@@ -59,10 +59,14 @@ public class OpenCVActivity extends AppCompatActivity {
 
     public void onSelectClick(View v){
 
-        Intent selectPicture = new Intent(Intent.ACTION_PICK);
+        Intent parse = new Intent(OpenCVActivity.this, GoogleVisionActivity.class);
+        startActivityForResult(parse, VISION_ACTIVITY);
+
+        /*Intent selectPicture = new Intent(Intent.ACTION_PICK);
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
         Uri dir = Uri.parse(path);
         selectPicture.setDataAndType(dir, "image/*");
-        startActivityForResult(selectPicture, SELECT_IMAGE);
+        startActivityForResult(selectPicture, SELECT_IMAGE);*/
+
     }
 }
