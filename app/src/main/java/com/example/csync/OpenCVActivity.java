@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
@@ -32,6 +35,14 @@ public class OpenCVActivity extends AppCompatActivity {
                 Intent parse = new Intent(OpenCVActivity.this, GoogleVisionActivity.class);
                 parse.putExtra(getResources().getString(R.string.Start_Vision_Intent), path);
                 startActivityForResult(parse, VISION_ACTIVITY);
+            }
+        }
+        else if(requestCode == VISION_ACTIVITY){
+            if(resultCode == Activity.RESULT_OK){
+                Intent returnIntent = new Intent(OpenCVActivity.this, MainActivity.class);
+                String text = data.getStringExtra(this.getResources().getString(R.string.Return_Vision_Intent));
+                returnIntent.putExtra(getResources().getString(R.string.Return_OpenCV_Intent),text);
+                startActivity(returnIntent);
             }
         }
 //        try {
@@ -59,7 +70,7 @@ public class OpenCVActivity extends AppCompatActivity {
 
     public void onSelectClick(View v){
 
-        Intent parse = new Intent(OpenCVActivity.this, GoogleVisionActivity.class);
+        Intent parse = new Intent(OpenCVActivity.this, FireBaseVisionActivity.class);
         startActivityForResult(parse, VISION_ACTIVITY);
 
         /*Intent selectPicture = new Intent(Intent.ACTION_PICK);
