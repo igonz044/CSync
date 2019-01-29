@@ -29,7 +29,7 @@ public class MainActivity extends AbsRuntimePermission {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == INTENT_CODE){
             if(resultCode == Activity.RESULT_OK){
-
+                textView.setText(data.getStringExtra(getResources().getString(R.string.Return_OpenCV_Intent)));
             }
         }
     }

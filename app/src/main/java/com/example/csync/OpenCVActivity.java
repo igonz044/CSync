@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 
@@ -32,8 +33,9 @@ public class OpenCVActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 Uri intentData = data.getData();
                 String path = intentData.getPath();
-                Intent parse = new Intent(OpenCVActivity.this, GoogleVisionActivity.class);
+                Intent parse = new Intent(OpenCVActivity.this, FireBaseVisionActivity.class);
                 parse.putExtra(getResources().getString(R.string.Start_Vision_Intent), path);
+                //Toast.makeText(this,path,Toast.LENGTH_LONG).show();
                 startActivityForResult(parse, VISION_ACTIVITY);
             }
         }
@@ -70,14 +72,14 @@ public class OpenCVActivity extends AppCompatActivity {
 
     public void onSelectClick(View v){
 
-        Intent parse = new Intent(OpenCVActivity.this, FireBaseVisionActivity.class);
+        /*Intent parse = new Intent(OpenCVActivity.this, FireBaseVisionActivity.class);
         startActivityForResult(parse, VISION_ACTIVITY);
-
-        /*Intent selectPicture = new Intent(Intent.ACTION_PICK);
+*/
+        Intent selectPicture = new Intent(Intent.ACTION_PICK);
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
         Uri dir = Uri.parse(path);
         selectPicture.setDataAndType(dir, "image/*");
-        startActivityForResult(selectPicture, SELECT_IMAGE);*/
+        startActivityForResult(selectPicture, SELECT_IMAGE);
 
     }
 }

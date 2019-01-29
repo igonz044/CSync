@@ -20,10 +20,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.Surface;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
@@ -39,6 +42,7 @@ import java.util.List;
 
 public class FireBaseVisionActivity extends AppCompatActivity {
 
+    TextView textView;
     public Bitmap bitmap;
     public FirebaseVisionImage image;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
@@ -53,31 +57,19 @@ public class FireBaseVisionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fire_base_vision);
+        FirebaseApp.initializeApp(this);
         Intent intent = getIntent();
         String temp = intent.getStringExtra(getResources().getString(R.string.Start_Vision_Intent));
+        textView.setText(temp);
         Uri uri = Uri.parse(temp);
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        image = FirebaseVisionImage.fromBitmap(bitmap);
-        FirebaseVisionImageMetadata metadata = new FirebaseVisionImageMetadata.Builder()
-                .setWidth(480)   // 480x360 is typically sufficient for
-                .setHeight(360)  // image recognition
-                .setFormat(FirebaseVisionImageMetadata.IMAGE_FORMAT_NV21)
-                //.setRotation(rotation)
-                .build();
-        ByteBuffer buffer = null;
-        FirebaseVisionImage image = FirebaseVisionImage.fromByteBuffer(buffer, metadata);
-        // Or: FirebaseVisionImage image = FirebaseVisionImage.fromByteArray(byteArray, metadata);
         FirebaseVisionImage imageFile = null;
         try {
             imageFile = FirebaseVisionImage.fromFilePath(getApplicationContext(), uri);
         } catch (IOException e) {
+            Toast.makeText(this,"Failed", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
-
+/*
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
                 .getCloudTextRecognizer();
         // Or, to change the default settings:
@@ -123,8 +115,10 @@ public class FireBaseVisionActivity extends AppCompatActivity {
                 }
             }
         }
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra(this.getResources().getString(R.string.Return_Vision_Intent), resultText);
+        textView.setText(resultText);
+        //Intent returnIntent = new Intent();
+        //returnIntent.putExtra(this.getResources().getString(R.string.Return_Vision_Intent), resultText);
+        */
     }
 
 
