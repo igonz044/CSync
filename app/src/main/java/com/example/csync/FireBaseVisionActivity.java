@@ -45,6 +45,7 @@ public class FireBaseVisionActivity extends AppCompatActivity {
     TextView textView;
     public Bitmap bitmap;
     public FirebaseVisionImage image;
+    static Uri uri;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -59,19 +60,31 @@ public class FireBaseVisionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_fire_base_vision);
         FirebaseApp.initializeApp(this);
         Intent intent = getIntent();
-        String temp = intent.getStringExtra(getResources().getString(R.string.Start_Vision_Intent));
-        textView.setText(temp);
-        Uri uri = Uri.parse(temp);
+        //String temp = intent.getStringExtra(getResources().getString(R.string.Start_Vision_Intent));
+            //textView.setText(temp);
+        uri = Uri.parse(intent.getStringExtra(getResources().getString(R.string.Start_Vision_Intent)));
+        startImagingOCR();
+/*
+
+        textView.setText(resultText);
+        //Intent returnIntent = new Intent();
+        //returnIntent.putExtra(this.getResources().getString(R.string.Return_Vision_Intent), resultText);
+        */
+    }
+
+    private void startImagingOCR() {
+
         FirebaseVisionImage imageFile = null;
         try {
             imageFile = FirebaseVisionImage.fromFilePath(getApplicationContext(), uri);
         } catch (IOException e) {
-            Toast.makeText(this,"Failed", Toast.LENGTH_LONG).show();
             e.printStackTrace();
+            Toast.makeText(getApplicationContext(),"Failed try catch", Toast.LENGTH_LONG).show();
         }
-/*
+        Toast.makeText(getApplicationContext(), "1st step", Toast.LENGTH_LONG).show();
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
                 .getCloudTextRecognizer();
+        Toast.makeText(getApplicationContext(), "2nd step", Toast.LENGTH_LONG).show();
         // Or, to change the default settings:
         //   FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
         //          .getCloudTextRecognizer(options);
@@ -83,6 +96,7 @@ public class FireBaseVisionActivity extends AppCompatActivity {
                             public void onSuccess(FirebaseVisionText firebaseVisionText) {
                                 // Task completed successfully
                                 // ...
+                                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
                             }
                         })
                         .addOnFailureListener(
@@ -91,22 +105,23 @@ public class FireBaseVisionActivity extends AppCompatActivity {
                                     public void onFailure(@NonNull Exception e) {
                                         // Task failed with an exception
                                         // ...
+                                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
                                     }
                                 });
         String resultText = result.getResult().getText();
-        for (FirebaseVisionText.TextBlock block: result.getResult().getTextBlocks()) {
+        for (FirebaseVisionText.TextBlock block : result.getResult().getTextBlocks()) {
             String blockText = block.getText();
             Float blockConfidence = block.getConfidence();
             List<RecognizedLanguage> blockLanguages = block.getRecognizedLanguages();
             Point[] blockCornerPoints = block.getCornerPoints();
             Rect blockFrame = block.getBoundingBox();
-            for (FirebaseVisionText.Line line: block.getLines()) {
+            for (FirebaseVisionText.Line line : block.getLines()) {
                 String lineText = line.getText();
                 Float lineConfidence = line.getConfidence();
                 List<RecognizedLanguage> lineLanguages = line.getRecognizedLanguages();
                 Point[] lineCornerPoints = line.getCornerPoints();
                 Rect lineFrame = line.getBoundingBox();
-                for (FirebaseVisionText.Element element: line.getElements()) {
+                for (FirebaseVisionText.Element element : line.getElements()) {
                     String elementText = element.getText();
                     Float elementConfidence = element.getConfidence();
                     List<RecognizedLanguage> elementLanguages = element.getRecognizedLanguages();
@@ -115,10 +130,8 @@ public class FireBaseVisionActivity extends AppCompatActivity {
                 }
             }
         }
-        textView.setText(resultText);
-        //Intent returnIntent = new Intent();
-        //returnIntent.putExtra(this.getResources().getString(R.string.Return_Vision_Intent), resultText);
-        */
+        Toast.makeText(this, resultText, Toast.LENGTH_LONG).show();
+
     }
 
 
