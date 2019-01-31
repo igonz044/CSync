@@ -12,6 +12,7 @@ import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -36,6 +37,7 @@ import com.google.firebase.ml.vision.text.RecognizedLanguage;
 
 import org.apache.http.util.ByteArrayBuffer;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
@@ -43,8 +45,9 @@ import java.util.List;
 public class FireBaseVisionActivity extends AppCompatActivity {
 
     TextView textView;
+    private static final int  SELECT_IMAGE = 10;
     public Bitmap bitmap;
-    public FirebaseVisionImage image;
+    public FirebaseVisionImage imageFile;
     static Uri uri;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     static {
@@ -59,11 +62,27 @@ public class FireBaseVisionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fire_base_vision);
         FirebaseApp.initializeApp(this);
-        Intent intent = getIntent();
+        //imageFile = new FirebaseVisionImage();
+        //Intent intent = getIntent();
         //String temp = intent.getStringExtra(getResources().getString(R.string.Start_Vision_Intent));
             //textView.setText(temp);
-        uri = Uri.parse(intent.getStringExtra(getResources().getString(R.string.Start_Vision_Intent)));
+       /* uri = Uri.parse(intent.getStringExtra(getResources().getString(R.string.Start_Vision_Intent)));
+        try
+        {
+            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver() , uri);
+        }
+        catch (IOException e)
+        {
+            Toast.makeText(this,"Failed to build image", Toast.LENGTH_LONG).show();
+            //handle exception
+        }
         startImagingOCR();
+        */
+        Intent selectPicture = new Intent(Intent.ACTION_PICK);
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
+        Uri dir = Uri.parse(path);
+        selectPicture.setDataAndType(dir, "image/*");
+        startActivityForResult(selectPicture, SELECT_IMAGE);
 /*
 
         textView.setText(resultText);
@@ -71,17 +90,29 @@ public class FireBaseVisionActivity extends AppCompatActivity {
         //returnIntent.putExtra(this.getResources().getString(R.string.Return_Vision_Intent), resultText);
         */
     }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SELECT_IMAGE){
+            if(resultCode == Activity.RESULT_OK){
+                uri = data.getData();
+                startImagingOCR();
+            }
+        }
+    }
 
-    private void startImagingOCR() {
+        private void startImagingOCR() {
 
-        FirebaseVisionImage imageFile = null;
+        //FirebaseVisionImage imageFile = null;
         try {
+            //imageFile = FirebaseVisionImage.fromFilePath(this, uri);
             imageFile = FirebaseVisionImage.fromFilePath(getApplicationContext(), uri);
         } catch (IOException e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(),"Failed try catch", Toast.LENGTH_LONG).show();
         }
+        //imageFile = FirebaseVisionImage.fromBitmap( bitmap);
         Toast.makeText(getApplicationContext(), "1st step", Toast.LENGTH_LONG).show();
+        /*FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
+            .getOnDeviceTextRecognizer();*/
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
                 .getCloudTextRecognizer();
         Toast.makeText(getApplicationContext(), "2nd step", Toast.LENGTH_LONG).show();
@@ -108,6 +139,7 @@ public class FireBaseVisionActivity extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_LONG).show();
                                     }
                                 });
+        while(!result.isComplete()){}
         String resultText = result.getResult().getText();
         for (FirebaseVisionText.TextBlock block : result.getResult().getTextBlocks()) {
             String blockText = block.getText();

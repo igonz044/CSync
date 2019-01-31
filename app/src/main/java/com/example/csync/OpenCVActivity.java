@@ -32,7 +32,7 @@ public class OpenCVActivity extends AppCompatActivity {
         if(requestCode == SELECT_IMAGE){
             if(resultCode == Activity.RESULT_OK){
                 Uri intentData = data.getData();
-                String path = intentData.getPath();
+                String path = intentData.getSchemeSpecificPart();
                 Intent parse = new Intent(OpenCVActivity.this, FireBaseVisionActivity.class);
                 parse.putExtra(getResources().getString(R.string.Start_Vision_Intent), path);
                 //Toast.makeText(this,path,Toast.LENGTH_LONG).show();
@@ -75,11 +75,13 @@ public class OpenCVActivity extends AppCompatActivity {
         /*Intent parse = new Intent(OpenCVActivity.this, FireBaseVisionActivity.class);
         startActivityForResult(parse, VISION_ACTIVITY);
 */
-        Intent selectPicture = new Intent(Intent.ACTION_PICK);
+        /*Intent selectPicture = new Intent(Intent.ACTION_PICK);
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
         Uri dir = Uri.parse(path);
         selectPicture.setDataAndType(dir, "image/*");
         startActivityForResult(selectPicture, SELECT_IMAGE);
-
+        */
+        Intent parse = new Intent(OpenCVActivity.this, FireBaseVisionActivity.class);
+        startActivityForResult(parse, VISION_ACTIVITY);
     }
 }
