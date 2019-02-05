@@ -110,12 +110,12 @@ public class FireBaseVisionActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Failed try catch", Toast.LENGTH_LONG).show();
         }
         //imageFile = FirebaseVisionImage.fromBitmap( bitmap);
-        Toast.makeText(getApplicationContext(), "1st step", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "1st step", Toast.LENGTH_LONG).show();
         /*FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
             .getOnDeviceTextRecognizer();*/
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
                 .getCloudTextRecognizer();
-        Toast.makeText(getApplicationContext(), "2nd step", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "2nd step", Toast.LENGTH_LONG).show();
         // Or, to change the default settings:
         //   FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
         //          .getCloudTextRecognizer(options);
@@ -127,7 +127,7 @@ public class FireBaseVisionActivity extends AppCompatActivity {
                             public void onSuccess(FirebaseVisionText firebaseVisionText) {
                                 // Task completed successfully
                                 // ...
-                                Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(), "Success", Toast.LENGTH_LONG).show();
                             }
                         })
                         .addOnFailureListener(
@@ -162,7 +162,7 @@ public class FireBaseVisionActivity extends AppCompatActivity {
                 }
             }
         }
-        Toast.makeText(this, resultText, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Text from image: " + resultText, Toast.LENGTH_LONG).show();
 
     }
 
