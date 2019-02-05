@@ -27,8 +27,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".ExportActivity"></activity>
         <activity android:name=".EditActivity" />
+
+        <activity android:name=".FireBaseVisionActivity"></activity>
+        <activity android:name=".GoogleVisionActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +40,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".VisionActivity" />
+
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="orc" />
+
+
         <activity android:name=".OpenCVActivity" />
     </application>
 
