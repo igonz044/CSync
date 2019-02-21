@@ -62,22 +62,6 @@ public class FireBaseVisionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fire_base_vision);
         FirebaseApp.initializeApp(this);
-        //imageFile = new FirebaseVisionImage();
-        //Intent intent = getIntent();
-        //String temp = intent.getStringExtra(getResources().getString(R.string.Start_Vision_Intent));
-            //textView.setText(temp);
-       /* uri = Uri.parse(intent.getStringExtra(getResources().getString(R.string.Start_Vision_Intent)));
-        try
-        {
-            bitmap = MediaStore.Images.Media.getBitmap(getContentResolver() , uri);
-        }
-        catch (IOException e)
-        {
-            Toast.makeText(this,"Failed to build image", Toast.LENGTH_LONG).show();
-            //handle exception
-        }
-        startImagingOCR();
-        */
         Intent selectPicture = new Intent(Intent.ACTION_PICK);
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
         Uri dir = Uri.parse(path);
@@ -163,6 +147,10 @@ public class FireBaseVisionActivity extends AppCompatActivity {
             }
         }
         Toast.makeText(this, "Text from image: " + resultText, Toast.LENGTH_LONG).show();
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(this.getResources().getString(R.string.Return_Vision_Intent), resultText);
+        setResult(Activity.RESULT_OK, returnIntent);
+        finish();
 
     }
 
